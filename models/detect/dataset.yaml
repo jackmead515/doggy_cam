@@ -1,0 +1,8 @@
+path: /home/jack/Mounts/DiskOne/doggy_cam/datasets/dog_objects/yolo # dataset root dir
+train: images/train
+val: images/val
+test: images/test
+
+# Classes
+names:
+  0: dog
