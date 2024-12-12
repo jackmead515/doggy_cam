@@ -1,0 +1,11 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numba>=0.60.0",
+    "opencv-contrib-python>=4.10.0.84",
+    "ultralytics>=8.3.49",
+]
