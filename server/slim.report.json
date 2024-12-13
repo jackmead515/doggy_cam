@@ -1,0 +1,236 @@
+{
+  "version": "1.1",
+  "engine": "linux/amd64|Transformer|1.40.11|1b271555882eacdfb4e6598d6d0552e9b9b1449b|2024-02-02_01:36:22PM",
+  "containerized": false,
+  "host_distro": {
+    "name": "Ubuntu",
+    "version": "22.04",
+    "display_name": "Ubuntu 22.04.4 LTS"
+  },
+  "type": "build",
+  "state": "error",
+  "error": "no.exposed.ports",
+  "target_reference": "doggy_cam_core",
+  "system": {
+    "type": "",
+    "release": "",
+    "distro": {
+      "name": "",
+      "version": "",
+      "display_name": ""
+    }
+  },
+  "source_image": {
+    "identity": {
+      "id": ""
+    },
+    "size": 0,
+    "size_human": "",
+    "create_time": "",
+    "docker_version": "",
+    "architecture": "",
+    "container_entry": {
+      "exe_path": ""
+    }
+  },
+  "minified_image_size": 0,
+  "minified_image_size_human": "",
+  "minified_image": "",
+  "minified_image_id": "",
+  "minified_image_digest": "",
+  "minified_image_has_data": false,
+  "minified_by": 0,
+  "artifact_location": "",
+  "container_report_name": "",
+  "seccomp_profile_name": "",
+  "apparmor_profile_name": "",
+  "image_stack": [
+    {
+      "is_top_image": true,
+      "id": "sha256:55acb4b2d48e125220e0ea41f876f97fe21b0ec3650b1a77e11624b177239a9f",
+      "full_name": "doggy_cam_core:latest",
+      "repo_name": "doggy_cam_core",
+      "version_tag": "latest",
+      "raw_tags": [
+        "doggy_cam_core:latest"
+      ],
+      "create_time": "2024-12-13T01:56:19Z",
+      "new_size": 6642475300,
+      "new_size_human": "6.6 GB",
+      "instructions": [
+        {
+          "type": "RUN",
+          "time": "2024-12-02T00:00:00Z",
+          "is_nop": false,
+          "is_exec_form": true,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 74817521,
+          "size_human": "75 MB",
+          "command_snippet": "RUN []",
+          "command_all": "RUN []",
+          "system_commands": [
+            "[]"
+          ],
+          "comment": "debuerreotype 0.15",
+          "inst_set_time_bucket": "2024-12-01T14:00:00-10:00",
+          "inst_set_time_index": 0,
+          "inst_set_time_reverse_index": 1
+        },
+        {
+          "type": "COPY",
+          "time": "2024-12-13T01:48:44Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 31805664,
+          "size_human": "32 MB",
+          "params": "/uv /usr/local/bin/uv",
+          "command_snippet": "COPY /uv /usr/local/bin/uv",
+          "command_all": "COPY /uv /usr/local/bin/uv",
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "RUN",
+          "time": "2024-12-13T01:53:03Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 217527992,
+          "size_human": "218 MB",
+          "command_snippet": "RUN apt-get update && \\\n\tapt-get install -y ...",
+          "command_all": "RUN apt-get update && \\\n\tapt-get install -y --no-install-recommends         libgl1         libglib2.0-0 && \\\n\tapt clean && \\\n\trm -rf /var/lib/apt/lists/*",
+          "system_commands": [
+            "apt-get update",
+            "apt-get install -y --no-install-recommends         libgl1         libglib2.0-0",
+            "apt clean",
+            "rm -rf /var/lib/apt/lists/*"
+          ],
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "WORKDIR",
+          "time": "2024-12-13T01:53:04Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 0,
+          "params": "/app",
+          "command_snippet": "WORKDIR /app",
+          "command_all": "WORKDIR /app",
+          "system_commands": [
+            "mkdir -p /app"
+          ],
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "RUN",
+          "time": "2024-12-13T01:53:09Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 57811829,
+          "size_human": "58 MB",
+          "command_snippet": "RUN uv python install 3.10",
+          "command_all": "RUN uv python install 3.10",
+          "system_commands": [
+            "uv python install 3.10"
+          ],
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "COPY",
+          "time": "2024-12-13T01:53:48Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 332,
+          "size_human": "332 B",
+          "params": ".python-version pyproject.toml .",
+          "command_snippet": "COPY .python-version pyproject.toml .",
+          "command_all": "COPY .python-version pyproject.toml .",
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "RUN",
+          "time": "2024-12-13T01:56:19Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 6260486496,
+          "size_human": "6.3 GB",
+          "command_snippet": "RUN uv sync",
+          "command_all": "RUN uv sync",
+          "system_commands": [
+            "uv sync"
+          ],
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "COPY",
+          "time": "2024-12-13T01:56:19Z",
+          "is_nop": false,
+          "local_image_exists": false,
+          "layer_index": 0,
+          "size": 25466,
+          "size_human": "26 kB",
+          "params": "src ./src",
+          "command_snippet": "COPY src ./src",
+          "command_all": "COPY src ./src",
+          "comment": "buildkit.dockerfile.v0",
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        },
+        {
+          "type": "CMD",
+          "time": "2024-12-13T01:56:19Z",
+          "is_last_instruction": true,
+          "is_nop": false,
+          "is_exec_form": true,
+          "local_image_exists": true,
+          "layer_index": 0,
+          "size": 0,
+          "params": "[\"uv\",\"run\",\"src/main.py\"]\n",
+          "command_snippet": "CMD [\"uv\",\"run\",\"src/main.py\"]\n",
+          "command_all": "CMD [\"uv\",\"run\",\"src/main.py\"]\n",
+          "comment": "buildkit.dockerfile.v0",
+          "raw_tags": [
+            "doggy_cam_core:latest"
+          ],
+          "is_buildkit_instruction": true,
+          "inst_set_time_bucket": "2024-12-12T15:45:00-10:00",
+          "inst_set_time_index": 1,
+          "inst_set_time_reverse_index": 0
+        }
+      ]
+    }
+  ],
+  "image_created": false,
+  "image_build_engine": ""
+}

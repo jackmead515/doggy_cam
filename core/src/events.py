@@ -2,6 +2,7 @@ from uuid import uuid4
 from datetime import datetime, timezone
 import threading
 from multiprocessing import Queue
+import logging
 
 _event_queue = Queue()
 _event_lock = threading.Lock()
@@ -24,6 +25,8 @@ def push(event_type: str, event: dict):
             "data": event
         }
         _event_queue.put_nowait(cloudevent)
+        
+        logging.info(f"Event pushed to queue: {cloudevent}")
 
 
 def listen() -> 'dict | None':

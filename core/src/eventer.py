@@ -10,7 +10,7 @@ from kafka import KafkaProducer
 class Eventer(threading.Thread):
 
     def __init__(self):
-        super().__init__(daemon=True, name='events_consumer')
+        super().__init__(daemon=True, name='events_publisher')
         self.producer = KafkaProducer(
             bootstrap_servers=config.kafka_brokers,
             max_block_ms=config.kafka_max_block_ms,
