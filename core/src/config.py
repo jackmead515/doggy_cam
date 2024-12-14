@@ -1,8 +1,6 @@
 import os
 import logging
 
-from distutils.util import strtobool
-
 # camera input parameters
 input_pipe = 0 # input pipeline to give to opencv
 width = 640 # frame width

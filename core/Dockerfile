@@ -1,5 +1,7 @@
 FROM debian:stable-slim
 
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
+
 COPY --link --from=ghcr.io/astral-sh/uv:0.5.2 /uv /usr/local/bin/uv
 
 WORKDIR /app
@@ -8,7 +10,7 @@ RUN uv python install 3.10
 
 COPY .python-version pyproject.toml .
 
-RUN uv sync
+RUN uv sync -v
 
 COPY src ./src
 

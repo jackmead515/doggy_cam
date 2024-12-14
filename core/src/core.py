@@ -57,7 +57,7 @@ def run():
             
             # if we have tracked the object for a number of frames,
             # re-detect the object to ensure we are still tracking the correct object
-            # if we don't detect it, revert to motion detection
+            # if we don't detect it, we will need to re-detect the object
             if tracker_index == config.tracker_frames:
                 detected = util.detect_objects(model, current, detect_conf_threshold=config.detect_conf_threshold)
 
@@ -120,7 +120,7 @@ def run():
                     'confidence': conf,
                 })
 
-        # else revert to motion detection as the trigger for object detection
+        # else increment the redetect index to attempt to re-detect the object
         else:
             redetect_index += 1
 

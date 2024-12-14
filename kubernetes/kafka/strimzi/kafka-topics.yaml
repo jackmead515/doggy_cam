@@ -1,0 +1,12 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: core.events
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  partitions: 2
+  replicas: 1
+  config:
+    retention.ms: 2592000000 # 30 days
+    segment.bytes: 1073741824 # 1GB

@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: strimzi-operator
+manifests:
+  helm:
+    releases:
+      - name: strimzi-operator
+        remoteChart: strimzi-kafka-operator
+        namespace: kafka
+        version: 0.33.2
+        createNamespace: false
+        repo: https://strimzi.io/charts
+deploy:
+  helm: {}

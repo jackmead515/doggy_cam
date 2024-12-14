@@ -13,6 +13,11 @@ def polar(x, y) -> tuple:
 
 @nb.jit(nopython=True, fastmath=True, parallel=True)
 def motion_detected(motion, window_size, threshold):
+    """
+    For each window of size window_size x window_size in the motion image, check
+    if the total motion percentage is greather than the threshold. If it is, mark
+    it as detected=1, otherwise detected=0
+    """
     square = window_size**2
     l = int(np.ceil(motion.shape[0] / window_size) * np.ceil(motion.shape[1] / window_size))
     detected = np.zeros(l, np.uint8)
@@ -30,11 +35,15 @@ def motion_detected(motion, window_size, threshold):
 
 @nb.jit(nopython=True, fastmath=True)
 def to_tensor(np_image):
-    """convert to tensor format using numpy"""
+    """convert numpy image to tensor format using numpy"""
     return (np.expand_dims(np.transpose(np_image, (2, 0, 1)), axis=0) / 255.0).astype(np.float32)
 
 
 def format_boxes(output, height, width, input_dim, detect_conf_threshold, nms_threshold=0.7):
+    """
+    Format the output of the YOLO model in onnx format to retrieve the bounding boxes and confidence scores
+    applying non-maximum suppression to remove overlapping boxes
+    """
     output = output[0][0].T
 
     scores = np.max(output[:, 4:], axis=1)
@@ -58,6 +67,10 @@ def format_boxes(output, height, width, input_dim, detect_conf_threshold, nms_th
 
 
 def detect_motion(prev, current, motion, guassian_blur=3, noise_threshold=100, motion_window=64, total_motion_threshold=0.05):
+    """
+    Calculate the motion between two frames using the absolute difference between the grayscale images
+    and retrieve the windows where the total motion is greater than the threshold.
+    """
     prevg = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
     currentg = cv2.cvtColor(current, cv2.COLOR_BGR2GRAY)
     cv2.GaussianBlur(prevg, dst=prevg, ksize=(guassian_blur, guassian_blur), sigmaX=guassian_blur)
@@ -70,7 +83,10 @@ def detect_motion(prev, current, motion, guassian_blur=3, noise_threshold=100, m
     return motion_detected(motion, motion_window, total_motion_threshold)
 
 
-def detect_objects(model, current, detect_conf_threshold=0.5, input_dim=640) -> Tuple[Tuple[int, int, int, int], float]:
+def detect_objects(model, current, detect_conf_threshold=0.5, input_dim=640) -> Tuple[Tuple[int, int, int, int], float] | None:
+    """
+    Use the YOLO model to detect objects in the current frame and return the bounding boxes and confidence scores
+    """
 
     height, width = current.shape[:2]
 
@@ -91,5 +107,4 @@ def detect_objects(model, current, detect_conf_threshold=0.5, input_dim=640) -> 
 def compile():
     motion_detected(np.zeros((640, 480), np.uint8), 64, 0.05)
     to_tensor(np.zeros((640, 480, 3), np.uint8))
-    format_boxes(np.zeros((1, 1, 5, 8400), np.float32), 640, 480, 640, 0.5)
     polar(1, 1)

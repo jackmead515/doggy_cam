@@ -1,0 +1,22 @@
+# Source: kafka-ui/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui
+  labels:
+    app.kubernetes.io/name: kafka-ui
+    app.kubernetes.io/instance: kafka-ui
+    app.kubernetes.io/version: "v0.4.0"
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/part-of: kafka
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+      nodePort: 30110
+  selector:
+    app.kubernetes.io/name: kafka-ui
+    app.kubernetes.io/instance: kafka-ui

@@ -1,0 +1,15 @@
+# Source: kafka-ui/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-ui
+  labels:
+    app.kubernetes.io/name: kafka-ui
+    app.kubernetes.io/instance: kafka-ui
+    app.kubernetes.io/version: "v0.4.0"
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/part-of: kafka
+data:
+  KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
+  KAFKA_CLUSTERS_0_NAME: kafka
+  KAFKA_CLUSTERS_0_ZOOKEEPER: kafka-zookeeper-client.kafka.svc.cluster.local:2181
