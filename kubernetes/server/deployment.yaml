@@ -17,10 +17,19 @@ spec:
       labels:
         app.kubernetes.io/name: server
     spec:
+      volumes:
+      - name: video
+        hostPath:
+          path: /dev/video0
       containers:
       - name: server
-        image: jackmead515/doggy_cam_server:alpha8
+        image: jackmead515/doggy_cam_server:alpha11
         imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: video
+            mountPath: /dev/video0
         livenessProbe:
           httpGet:
             path: /healthz
@@ -38,10 +47,22 @@ spec:
           timeoutSeconds: 5
         ports:
           - containerPort: 8000
-          - containerPort: 3131 
+            protocol: TCP
+          - containerPort: 3131
             protocol: UDP
         env:
           - name: HTTP_PORT
             value: "8000"
           - name: FFMPEG_PIPELINE
-            value: "ffmpeg"
+            value: |-
+              ffmpeg \
+                -f v4l2 \
+                -input_format mjpeg \
+                -i /dev/video0 \
+                -s 640x480 \
+                -r 30 \
+                -f mpegts \
+                -vcodec mpeg1video \
+                -threads 2 \
+                -map 0:v -f mpegts -vcodec mpeg1video udp://relay.app.svc.cluster.local:3131 \
+                -map 0:v -f mpegts -vcodec mpeg1video udp://core.app.svc.cluster.local:3131

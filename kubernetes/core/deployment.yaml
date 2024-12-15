@@ -19,8 +19,13 @@ spec:
     spec:
       containers:
       - name: core
-        image: jackmead515/doggy_cam_core:alpha6
+        image: jackmead515/doggy_cam_core:alpha15
         imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 3131
+            protocol: UDP
         env:
           - name: KAFKA_BROKERS
             value: kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
+          - name: INPUT_PIPE
+            value: udp://core.app.svc.cluster.local:3131

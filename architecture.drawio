@@ -5,13 +5,13 @@
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="2" value="Webcam" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-150" y="120" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-270" y="110" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="6" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="4" target="5" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="4" value="Relay" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="510" y="240" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="470" y="240" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="47" style="edgeStyle=entityRelationEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;elbow=vertical;" parent="1" source="5" target="46" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -39,7 +39,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="7" value="Server" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="510" y="120" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="470" y="80" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="19" style="edgeStyle=entityRelationEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="9" target="18" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -69,7 +69,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="18" value="Kafka" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="520" y="-200" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="850" y="-320" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="24" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="21" target="23" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -90,14 +90,14 @@
                 </mxCell>
                 <mxCell id="29" value="UDP" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="28" vertex="1" connectable="0">
                     <mxGeometry x="-0.1062" relative="1" as="geometry">
-                        <mxPoint as="offset"/>
+                        <mxPoint x="12" y="-11" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="21" value="FFMPEG" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="30" y="120" width="120" height="80" as="geometry"/>
+                <mxCell id="21" value="Streamer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+                    <mxGeometry x="-100" y="110" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="23" value="Pipe both disk and UDP. Retain last 1 hour of avi files on disk, cleaning up the older ones" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;align=left;" parent="1" vertex="1">
-                    <mxGeometry x="-2.25" y="240" width="184.5" height="120" as="geometry"/>
+                    <mxGeometry x="-132.25" y="230" width="184.5" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="41" style="html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;elbow=vertical;" parent="1" source="36" target="39" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -119,19 +119,19 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="36" value="Sticher" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="755" y="-200" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1085" y="-320" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="39" value="for each record event:&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;consume detection events until end time&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;gather and concat avi files&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;remove old avi files&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;for each detection event:&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;add bbox/timestamp/etc overlays&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;save new one [start]_[stop].mp4&lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#9;&lt;/span&gt;add record to database" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;align=left;" parent="1" vertex="1">
-                    <mxGeometry x="645" y="-380" width="340" height="140" as="geometry"/>
+                    <mxGeometry x="975" y="-500" width="340" height="140" as="geometry"/>
                 </mxCell>
                 <mxCell id="42" value="Postgres" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="755" y="-50" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1085" y="-170" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="46" value="Start/stop streaming/recording&lt;br&gt;Modify configurations&lt;br&gt;Review recorded events" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;align=left;" parent="1" vertex="1">
                     <mxGeometry x="900" y="210" width="180" height="140" as="geometry"/>
                 </mxCell>
                 <mxCell id="49" value="Kafka" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="1000" y="-200" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="1330" y="-320" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="53" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="52" target="12" edge="1">
                     <mxGeometry relative="1" as="geometry"/>

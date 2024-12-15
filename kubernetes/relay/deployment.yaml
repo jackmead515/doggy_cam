@@ -19,16 +19,36 @@ spec:
     spec:
       containers:
       - name: relay
-        image: jackmead515/doggy_cam_relay:alpha6
+        image: jackmead515/doggy_cam_relay:alpha21
         imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+          timeoutSeconds: 5
         ports:
-          - containerPort: 5454
+          - containerPort: 5000
+            protocol: TCP
+          - containerPort: 3131
+            protocol: UDP
         env:
           - name: NODE_ENV
             value: production
           - name: STREAM_HOST
-            value: app.server.svc.cluster.local
+            value: relay.app.svc.cluster.local
           - name: STREAM_PORT
             value: "3131"
+          - name: HTTP_HOST
+            value: "0.0.0.0"
           - name: HTTP_PORT
-            value: "5454"
+            value: "5000"

@@ -1,7 +1,9 @@
 import os
 
+debug = False
 http_port = 8000
 ffmpeg_pipeline = None
+data_dir = '/data'
 
 def required_env(key):
     value = os.getenv(key)
@@ -13,8 +15,10 @@ def required_env(key):
 
 
 def initialize():
-    global http_port, ffmpeg_pipeline
+    global http_port, ffmpeg_pipeline, debug, data_dir
     
+    debug = os.getenv('DEBUG', 'false').lower() == 'true'
     http_port = int(os.getenv('HTTP_PORT', http_port))
     ffmpeg_pipeline = required_env('FFMPEG_PIPELINE')
+    data_dir = os.getenv('DATA_DIR', data_dir)
 

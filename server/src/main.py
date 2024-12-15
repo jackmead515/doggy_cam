@@ -15,6 +15,7 @@ from routes import healthz as healthz_routes
 app.register_blueprint(stream_routes.mod)
 app.register_blueprint(healthz_routes.mod)
 
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')

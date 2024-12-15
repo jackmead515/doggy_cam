@@ -1,11 +1,17 @@
+import time
+import logging
+
 import util
 import config
+
 
 if __name__ == "__main__":
     
     util.compile()
     
     config.initialize()
+    
+    logging.basicConfig(level=logging.DEBUG)
     
     import core
     import server 
@@ -17,7 +23,15 @@ if __name__ == "__main__":
     server.start()
     events.start()
     
-    core.run()
-    
+    while True:
+        try:
+            core.run()
+        except Exception as e:
+            logging.exception(e)
+            time.sleep(0.5)
+            continue
+        except KeyboardInterrupt:
+            break
+
     server.join()
     events.stop()

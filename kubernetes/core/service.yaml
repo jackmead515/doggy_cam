@@ -1,17 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: relay
+  name: core
   namespace: app
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    app.kubernetes.io/name: relay
+    app.kubernetes.io/name: core
   ports:
-  - name: http
-    port: 5000
-    targetPort: 5000
-    nodePort: 30300
   - name: stream
     port: 3131
     targetPort: 3131

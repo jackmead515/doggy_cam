@@ -30,7 +30,7 @@ class Eventer(threading.Thread):
 
                     # publish event to kafka
                     cloudevent = bytes(json.dumps(event), 'utf-8')
-                    future = self.producer.send(config.events_kafka_topic, cloudevent)
+                    future = self.producer.send(config.kafka_topic, cloudevent)
                     future.get()
             except:
                 logging.exception('failed to publish event to kafka')

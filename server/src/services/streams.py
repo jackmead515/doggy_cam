@@ -37,7 +37,7 @@ def launch_stream(stream_config: str):
     with _streams_lock:
         logging.info(f'Running pipeline: {shlex.split(stream_config)}')
 
-        if config.DEBUG:
-            _stream = subprocess.Popen(shlex.split(stream_config), shell=True, cwd=config.RECORD_DIRECTORY)
+        if config.debug:
+            _stream = subprocess.Popen(shlex.split(stream_config), shell=True, cwd=config.data_dir)
         else:
-            _stream = subprocess.Popen(shlex.split(stream_config), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=config.RECORD_DIRECTORY)
+            _stream = subprocess.Popen(shlex.split(stream_config), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=config.data_dir)

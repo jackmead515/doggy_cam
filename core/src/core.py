@@ -48,6 +48,7 @@ def run():
         if skip_first:
             np.copyto(prev, current)
             skip_first = False
+            logging.info(f'First frame captured. Size: {current.shape}')
             continue
         
         # utilizing the tracker to track the currently detected object
@@ -63,7 +64,7 @@ def run():
 
                 if detected is not None:
                     box, conf = detected
-                    x1, y1, x2, y2 = box
+                    x1, y1, x2, y2 = [int(v) for v in box]
                     x, y, w, h = x1, y1, x2-x1, y2-y1
                     
                     tracker = cv2.legacy.TrackerCSRT_create()
@@ -74,7 +75,7 @@ def run():
                     #cv2.rectangle(current, (x1, y1), (x2, y2), (0, 255, 0), 2)
                     events.push('core.object.detected', {
                         'box': [x1, y1, x2, y2],
-                        'confidence': conf,
+                        'confidence': float(conf),
                     })
 
                 else:
@@ -85,7 +86,9 @@ def run():
                 
                 # we have successfully tracked the object, draw the box
                 if success:
-                    #(x, y, w, h) = [int(v) for v in box]
+                    (x, y, w, h) = [int(v) for v in box]
+                    x1, y1, x2, y2 = x, y, x+w, y+h
+                    
                     #cv2.rectangle(current, (x, y), (x + w, y + h), (0, 0, 255), 2)
                     events.push('core.object.tracked', {
                         'track_index': tracker_index,
@@ -106,7 +109,7 @@ def run():
 
             if detected is not None:
                 box, conf = detected
-                x1, y1, x2, y2 = box
+                x1, y1, x2, y2 = [int(v) for v in box]
                 x, y, w, h = x1, y1, x2-x1, y2-y1
                 
                 tracker = cv2.legacy.TrackerCSRT_create()
@@ -117,7 +120,7 @@ def run():
                 #cv2.rectangle(current, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 events.push('core.object.detected', {
                     'box': [x1, y1, x2, y2],
-                    'confidence': conf,
+                    'confidence': float(conf),
                 })
 
         # else increment the redetect index to attempt to re-detect the object
@@ -137,7 +140,7 @@ def run():
 
         if np.sum(detected) > config.motion_detected_windows:
             events.push('core.motion.detected', {
-                'detected': np.sum(detected),
+                'detected': int(np.sum(detected)),
                 'total': len(detected),
             })
             

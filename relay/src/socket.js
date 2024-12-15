@@ -50,12 +50,15 @@ function toggleRelay() {
     const { server, callback } = relay;
     const hasListener = server.eventNames().includes('message');
     const streamRequested = streamIsRequested();
+
     if (streamRequested && !hasListener) {
         console.log('attaching relay for stream');
         server.addListener('message', callback);
+
     } else if (!streamRequested && hasListener) {
         console.log('removing relay for stream');
         server.removeListener('message', callback);
+
     }
 }
 
@@ -72,10 +75,12 @@ function onConnection(socket) {
             console.log('client requesting stream');
             socket.state.streamRequested = true;
             toggleRelay();
+
         } else if (message === 'stop_stream') {
             console.log('client stopping stream');
             socket.state.streamRequested = false;
             toggleRelay();
+
         }
 
     });

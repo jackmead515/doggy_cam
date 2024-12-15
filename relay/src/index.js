@@ -1,20 +1,36 @@
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 
 const socket = require('./socket');
 const config = require('./config');
 
 async function main() {
     console.info('loaded configurations', JSON.stringify(config));
-    
-    const httpServer = http.createServer();
 
-    await socket.initialize(httpServer);
+    try {
+        const httpServer = http.createServer();
 
-    httpServer.listen(config.httpPort, () => {
-        console.log('relay started');
-    });
+        await socket.initialize(httpServer);
+
+        // healthz endpoint
+        httpServer.on('request', (req, res) => {
+            if (req.url === '/healthz') {
+                res.writeHead(200);
+                res.end('OK');
+            }
+        });
+
+        httpServer.on('error', (error) => {
+            console.error('http server error', error);
+        });
+
+        httpServer.listen(config.httpPort, () => {
+            console.info('relay started');
+        });
+
+    } catch (error) {
+        console.error('error starting relay', error);
+        throw error;
+    }
 }
 
 main();
