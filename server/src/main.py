@@ -1,4 +1,5 @@
-# generate Flask boilerplate
+import logging
+import time
 from flask import Flask
 from flask_cors import CORS
 
@@ -8,6 +9,8 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 import config
 
 config.initialize()
+
+logging.basicConfig(level=logging.INFO)
 
 from routes import stream as stream_routes
 from routes import healthz as healthz_routes
@@ -30,6 +33,12 @@ if __name__ == '__main__':
     """    
     curl -X POST http://localhost:8000/api/stream
     """
+    
+    if config.start_on_boot:
+        import services.streams as stream_service
+        
+        time.sleep(3)
+        stream_service.launch_stream()
     
     app.run(
         host='0.0.0.0',

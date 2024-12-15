@@ -17,6 +17,8 @@ def kill_stream():
 
     with _streams_lock:
         if _stream is not None:
+            logging.info('Killing pipeline')
+            
             _stream.send_signal(signal.SIGINT)
             try:
                 exit_code = _stream.wait(timeout=5)
@@ -25,19 +27,20 @@ def kill_stream():
 
         _stream = None
 
-        # final any orthus processes that may have been left running
-        subprocess.run(['pkill', 'orthus'])
+        # final any ffmpeg processes that may have been left running
+        subprocess.run(['pkill', 'ffmpeg'])
 
 
-def launch_stream(stream_config: str):
+def launch_stream():
     global _stream, _streams_lock
     
     kill_stream()
 
     with _streams_lock:
-        logging.info(f'Running pipeline: {shlex.split(stream_config)}')
+        pipeline = shlex.split(config.ffmpeg_pipeline)
+        logging.info(f'Running pipeline: {pipeline}')
 
         if config.debug:
-            _stream = subprocess.Popen(shlex.split(stream_config), shell=True, cwd=config.data_dir)
+            _stream = subprocess.Popen(pipeline, cwd=config.data_dir)
         else:
-            _stream = subprocess.Popen(shlex.split(stream_config), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=config.data_dir)
+            _stream = subprocess.Popen(pipeline, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=config.data_dir)

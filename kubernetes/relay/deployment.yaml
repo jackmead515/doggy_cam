@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: relay
-        image: jackmead515/doggy_cam_relay:alpha21
+        image: jackmead515/doggy_cam_relay:alpha22
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -45,7 +45,7 @@ spec:
           - name: NODE_ENV
             value: production
           - name: STREAM_HOST
-            value: relay.app.svc.cluster.local
+            value: "0.0.0.0"
           - name: STREAM_PORT
             value: "3131"
           - name: HTTP_HOST

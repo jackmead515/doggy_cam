@@ -9,7 +9,11 @@ async function main() {
     try {
         const httpServer = http.createServer();
 
+        console.info('initializing socket');
+
         await socket.initialize(httpServer);
+
+        console.info('socket initialized');
 
         // healthz endpoint
         httpServer.on('request', (req, res) => {
@@ -24,13 +28,15 @@ async function main() {
         });
 
         httpServer.listen(config.httpPort, () => {
-            console.info('relay started');
+            console.info('websocket relay started');
         });
 
     } catch (error) {
         console.error('error starting relay', error);
         throw error;
     }
+
+    console.info('http server initialized');
 }
 
 main();
