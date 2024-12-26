@@ -8,7 +8,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: RollingUpdate
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: core
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: core
-        image: jackmead515/doggy_cam_core:alpha15
+        image: jackmead515/doggy_cam_core:alpha31
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 3131
@@ -29,3 +29,11 @@ spec:
             value: kafka-kafka-bootstrap.kafka.svc.cluster.local:9092
           - name: INPUT_PIPE
             value: udp://core.app.svc.cluster.local:3131
+          - name: WIDTH
+            value: "1280"
+          - name: HEIGHT
+            value: "720"
+          - name: REDETECT_INTERVAL
+            value: "1"
+          - name: MOTION_INTERVAL
+            value: "0.2"

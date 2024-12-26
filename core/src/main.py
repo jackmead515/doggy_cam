@@ -4,14 +4,11 @@ import logging
 import util
 import config
 
-
 if __name__ == "__main__":
     
     util.compile()
     
     config.initialize()
-    
-    logging.basicConfig(level=logging.DEBUG)
     
     import core
     import server 

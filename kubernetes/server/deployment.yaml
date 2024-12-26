@@ -23,7 +23,7 @@ spec:
           path: /dev/video0
       containers:
       - name: server
-        image: jackmead515/doggy_cam_server:alpha28
+        image: jackmead515/doggy_cam_server:alpha29
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
@@ -58,4 +58,4 @@ spec:
           - name: START_ON_BOOT
             value: "true"
           - name: FFMPEG_PIPELINE
-            value: ffmpeg -f v4l2 -input_format mjpeg -i /dev/video0 -threads 2 -map 0:v -r 30 -s 640x480 -f mpegts -vcodec mpeg1video udp://relay.app.svc.cluster.local:3131 -map 0:v -r 30 -s 640x480 -f mpegts -vcodec libx264 udp://core.app.svc.cluster.local:3131
+            value: ffmpeg -f v4l2 -input_format mjpeg -i /dev/video0 -threads 2 -map 0:v -r 30 -s 1280x720 -f mpegts -vcodec mpeg1video udp://relay.app.svc.cluster.local:3131 -map 0:v -r 30 -s 1280x720 -f mpegts -vcodec libx264 udp://core.app.svc.cluster.local:3131

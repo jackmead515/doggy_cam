@@ -2,23 +2,49 @@ import os
 import logging
 
 # camera input parameters
-input_pipe = 0 # input pipeline to give to opencv
-width = 640 # frame width
-height = 480 # frame height
-fps = 30 # frames per second
+input_pipe = 0
+'''input pipeline to give to opencv'''
+
+width = 640
+'''frame width'''
+
+height = 480
+'''frame height'''
+
+fps = 30
+'''frames per second'''
 
 # motion detection parameters
-guassian_blur = 17 # blur kernel to use for guassian blur
-window_perc = 0.1 # 10% of image creates 10x10 = 100 pixel window
-noise_threshold = 64 # used to remove noise from the scene
-total_motion_threshold = 0.04 # 5% of window must have changed from previous frame to detect motion
-motion_detected_windows = 3 # number of windows to detect motion
+guassian_blur = 17
+'''blur kernel to use for guassian blur'''
+
+window_perc = 0.1
+'''10% of image creates 10x10 = 100 pixel window'''
+
+noise_threshold = 64
+'''used to remove noise from the scene'''
+
+total_motion_threshold = 0.04
+'''percentage of window must have changed from previous frame to detect motion'''
+
+motion_detected_windows = 3
+'''number of windows to detect motion'''
 
 # object tracking and detection parameters
-tracker_frames = 5 # number of frames to track the object
-detect_conf_threshold = 0.7 # confidence threshold for detection of dog
-redetect_interval = 30 # number of frames to re-detect the object
-model_path = "hapa.onnx" # path to the model to load
+tracker_frames = 5
+'''number of frames to track the object'''
+
+detect_conf_threshold = 0.7
+'''confidence threshold for detection of dog'''
+
+redetect_interval = 1
+'''fractional seconds to wait before re-detecting the object'''
+
+motion_interval = 0.1 # 100ms
+'''fractional seconds to wait before detecting motion'''
+
+model_path = "hapa.onnx"
+'''path to the model to load'''
 
 # kafka parameters
 kafka_brokers = None
@@ -43,7 +69,7 @@ def required_env(key):
 def initialize():
     global kafka_brokers, kafka_max_block_ms, kafka_retries, http_port, kafka_topic
     global input_pipe, width, height, fps, detect_conf_threshold, guassian_blur
-    global window_perc, noise_threshold, tracker_frames
+    global window_perc, noise_threshold, tracker_frames, motion_interval
     global total_motion_threshold, redetect_interval, model_path
     global motion_detected_windows
 
@@ -72,6 +98,7 @@ def initialize():
     noise_threshold = int(os.getenv('NOISE_THRESHOLD', noise_threshold))
     tracker_frames = int(os.getenv('TRACKER_FRAMES', tracker_frames))
     total_motion_threshold = float(os.getenv('TOTAL_MOTION_THRESHOLD', total_motion_threshold))
-    redetect_interval = int(os.getenv('REDETECT_INTERVAL', redetect_interval))
+    redetect_interval = float(os.getenv('REDETECT_INTERVAL', redetect_interval))
+    motion_interval = float(os.getenv('MOTION_INTERVAL', motion_interval))
     motion_detected_windows = int(os.getenv('MOTION_DETECTED_WINDOWS', motion_detected_windows))
     model_path = os.getenv('MODEL_PATH', model_path)

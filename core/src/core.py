@@ -28,10 +28,11 @@ def run():
     skip_first = True
     use_tracker = False
     tracker_index = 0
-    redetect_index = 0
+    motion_time = time.perf_counter()
+    redetect_time = time.perf_counter()
     
     fps_buffer = np.zeros(30)
-    start_time = time.perf_counter()
+    fps_time = time.perf_counter()
     fps_index = 0
     fps = 0
 
@@ -40,6 +41,7 @@ def run():
     while True:
 
         success, _ = input.read(current)
+        frame_time = time.perf_counter()
         
         if not success:
             break
@@ -53,7 +55,7 @@ def run():
         
         # utilizing the tracker to track the currently detected object
         if use_tracker:
-            redetect_index = 0
+            redetect_time = time.perf_counter()
             tracker_index += 1
             
             # if we have tracked the object for a number of frames,
@@ -102,8 +104,8 @@ def run():
 
         # else if we have reached a point to attempt to re-detect the object
         # try and detect an object, if we find one, start tracking it
-        elif redetect_index >= config.redetect_interval:
-            redetect_index = 0
+        elif frame_time - redetect_time >= config.redetect_interval:
+            redetect_time = time.perf_counter()
             
             detected = util.detect_objects(model, current, detect_conf_threshold=config.detect_conf_threshold)
 
@@ -123,26 +125,24 @@ def run():
                     'confidence': float(conf),
                 })
 
-        # else increment the redetect index to attempt to re-detect the object
-        else:
-            redetect_index += 1
+        if frame_time - motion_time >= config.motion_interval:
+            motion_time = time.perf_counter()
 
+            detected = util.detect_motion(
+                prev,
+                current,
+                motion,
+                guassian_blur=config.guassian_blur,
+                noise_threshold=config.noise_threshold,
+                motion_window=motion_window,
+                total_motion_threshold=config.total_motion_threshold
+            )
 
-        detected = util.detect_motion(
-            prev,
-            current,
-            motion,
-            guassian_blur=config.guassian_blur,
-            noise_threshold=config.noise_threshold,
-            motion_window=motion_window,
-            total_motion_threshold=config.total_motion_threshold
-        )
-
-        if np.sum(detected) > config.motion_detected_windows:
-            events.push('core.motion.detected', {
-                'detected': int(np.sum(detected)),
-                'total': len(detected),
-            })
+            if np.sum(detected) > config.motion_detected_windows:
+                events.push('core.motion.detected', {
+                    'detected': int(np.sum(detected)),
+                    'total': len(detected),
+                })
             
             # for i in range(len(detected)):
             #     if detected[i] == 1:
@@ -152,15 +152,14 @@ def run():
 
 
         # update the FPS for monitoring purposes
-        fps_buffer[fps_index] = (time.perf_counter() - start_time)
-        start_time = time.perf_counter()
+        fps_buffer[fps_index] = (time.perf_counter() - fps_time)
+        fps_time = time.perf_counter()
         fps_index += 1
         if fps_index == len(fps_buffer):
             fps = len(fps_buffer) / np.sum(fps_buffer)
             fps_index = 0
             
-            logging.info(f"FPS: {fps}")
-            
+            logging.info(f"FPS: {fps} | Frame Size: {current.shape}")
         
         # cv2.imshow('frame', current)
 
