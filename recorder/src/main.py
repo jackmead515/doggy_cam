@@ -9,6 +9,13 @@ import config
 
 
 def consume_and_compile():
+    """
+    Consume all events from the previous checkpoint to the end of the stream.
+    Then, remove the last hour of events (as it may not be complete). We don't
+    know that the first hour is complete when the consumer is first run, but
+    after it is run one, we can assume that the first hour is complete. We then
+    commit and close the kafka consumer at that point.
+    """
     consumer = KafkaConsumer(
         max_poll_records=config.kafka_max_poll_records,
         max_poll_interval_ms=config.kafka_max_poll_interval_ms,
@@ -66,8 +73,13 @@ def consume_and_compile():
 
 
 def aggregate_into_events(df):
-    # aggregate per 1 minute and count the number of events
-    counts_df = df.resample('1T', on='timestamp').count().drop(columns=['type'])
+    """
+    Aggregate the events into 30 seconds intervals and count the number
+    of "core" events. We aggregate by 30 seconds because preserving the entire
+    30 seconds interval is acceptable for the purposes of this project.
+    """
+    # aggregate per 30 seconds and count the number of events
+    counts_df = df.resample('30s', on='timestamp').count().drop(columns=['type'])
 
     # remove any that have no events
     counts_df = counts_df[counts_df['package'] > 0]
@@ -80,6 +92,7 @@ def aggregate_into_events(df):
     counts_df = counts_df.reset_index()
     counts_df = counts_df.sort_values('timestamp')
 
+    # iterate through the rows and group events that are back to back (i.e. no gaps)
     for _, row in counts_df.iterrows():
         if previous_row is not None:
             if (row.timestamp - previous_row.timestamp).total_seconds() == 60:
