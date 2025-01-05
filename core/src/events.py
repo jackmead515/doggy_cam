@@ -7,16 +7,15 @@ import logging
 _event_queue = Queue()
 _event_lock = threading.Lock()
 
-def push(event_type: str, event: dict):
+def push(event_type: str, timestamp: float, event: dict):
     global _event_queue
 
     with _event_lock:
-        timestamp = datetime.now(tz=timezone.utc).isoformat()
         cloudevent = {
             "context": {
                 "version": "1.0.0",
                 "id": str(uuid4()),
-                "timestamp": timestamp,
+                "timestamp": datetime.fromtimestamp(timestamp, timezone.utc).isoformat(),
                 "type": event_type,
                 "action": "create",
                 "dataschema": event_type,

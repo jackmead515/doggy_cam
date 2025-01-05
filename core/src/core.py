@@ -28,8 +28,8 @@ def run():
     skip_first = True
     use_tracker = False
     tracker_index = 0
-    motion_time = time.perf_counter()
-    redetect_time = time.perf_counter()
+    motion_time = time.time()
+    redetect_time = time.time()
     
     fps_buffer = np.zeros(30)
     fps_time = time.perf_counter()
@@ -41,7 +41,7 @@ def run():
     while True:
 
         success, _ = input.read(current)
-        frame_time = time.perf_counter()
+        frame_time = time.time()
         
         if not success:
             break
@@ -55,7 +55,7 @@ def run():
         
         # utilizing the tracker to track the currently detected object
         if use_tracker:
-            redetect_time = time.perf_counter()
+            redetect_time = time.time()
             tracker_index += 1
             
             # if we have tracked the object for a number of frames,
@@ -75,7 +75,7 @@ def run():
                     use_tracker = True
                     
                     #cv2.rectangle(current, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                    events.push('core.object.detected', {
+                    events.push('core.object.detected', frame_time, {
                         'box': [x1, y1, x2, y2],
                         'confidence': float(conf),
                     })
@@ -92,7 +92,7 @@ def run():
                     x1, y1, x2, y2 = x, y, x+w, y+h
                     
                     #cv2.rectangle(current, (x, y), (x + w, y + h), (0, 0, 255), 2)
-                    events.push('core.object.tracked', {
+                    events.push('core.object.tracked', frame_time, {
                         'track_index': tracker_index,
                         'box': [x1, y1, x2, y2],
                     })
@@ -105,7 +105,7 @@ def run():
         # else if we have reached a point to attempt to re-detect the object
         # try and detect an object, if we find one, start tracking it
         elif frame_time - redetect_time >= config.redetect_interval:
-            redetect_time = time.perf_counter()
+            redetect_time = time.time()
             
             detected = util.detect_objects(model, current, detect_conf_threshold=config.detect_conf_threshold)
 
@@ -120,13 +120,13 @@ def run():
                 use_tracker = True
                 
                 #cv2.rectangle(current, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                events.push('core.object.detected', {
+                events.push('core.object.detected', frame_time, {
                     'box': [x1, y1, x2, y2],
                     'confidence': float(conf),
                 })
 
         if frame_time - motion_time >= config.motion_interval:
-            motion_time = time.perf_counter()
+            motion_time = time.time()
 
             detected = util.detect_motion(
                 prev,
@@ -139,7 +139,7 @@ def run():
             )
 
             if np.sum(detected) > config.motion_detected_windows:
-                events.push('core.motion.detected', {
+                events.push('core.motion.detected', frame_time, {
                     'detected': int(np.sum(detected)),
                     'total': len(detected),
                 })
@@ -162,7 +162,6 @@ def run():
             logging.info(f"FPS: {fps} | Frame Size: {current.shape}")
         
         # cv2.imshow('frame', current)
-
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
         
